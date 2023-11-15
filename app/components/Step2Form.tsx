@@ -49,7 +49,7 @@ export default function Step2From(props: any) {
     <div className="grid grid-cols-6">
       <form
         className="col-span-4 col-start-2 m-10 p-10 border rounded shadow"
-        action={"/Step2"}
+        action={"/Result"}
       >
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
@@ -65,7 +65,7 @@ export default function Step2From(props: any) {
                   <input
                     value={projectName}
                     required
-                    disabled
+                    readOnly
                     type="text"
                     name="project_name"
                     id="project_name"
@@ -85,7 +85,7 @@ export default function Step2From(props: any) {
                 <div className="mt-2">
                   <textarea
                     required
-                    disabled
+                    readOnly
                     value={projectDescription}
                     name="project_description"
                     id="project_description"
@@ -106,7 +106,7 @@ export default function Step2From(props: any) {
                 <div className="mt-2">
                   <input
                     required
-                    disabled
+                    readOnly
                     value={client}
                     id="client"
                     name="client"
@@ -127,7 +127,7 @@ export default function Step2From(props: any) {
                   <input
                     value={contractor}
                     required
-                    disabled
+                    readOnly
                     type="text"
                     name="contractor"
                     id="contractor"
@@ -162,6 +162,7 @@ export default function Step2From(props: any) {
                   </label>
                   <div className="mt-2">
                     <input
+                      value={xValues.length > 0 ? Math.max(...xValues) : ""}
                       required
                       id="max_x"
                       type="number"
@@ -179,6 +180,7 @@ export default function Step2From(props: any) {
                   </label>
                   <div className="mt-2">
                     <input
+                      value={xValues.length > 0 ? Math.min(...xValues) : ""}
                       required
                       id="min_x"
                       type="number"
@@ -196,6 +198,7 @@ export default function Step2From(props: any) {
                   </label>
                   <div className="mt-2">
                     <input
+                      value={yValues.length > 0 ? Math.max(...yValues) : ""}
                       required
                       id="max_y"
                       type="number"
@@ -213,6 +216,7 @@ export default function Step2From(props: any) {
                   </label>
                   <div className="mt-2">
                     <input
+                      value={yValues.length > 0 ? Math.min(...yValues) : ""}
                       required
                       id="min_y"
                       type="number"
@@ -231,6 +235,7 @@ export default function Step2From(props: any) {
                   <div className="mt-2">
                     <input
                       required
+                      value={zValues.length > 0 ? Math.max(...zValues) : ""}
                       id="max_z"
                       type="number"
                       name="max_z"
@@ -247,6 +252,7 @@ export default function Step2From(props: any) {
                   </label>
                   <div className="mt-2">
                     <input
+                      value={zValues.length > 0 ? Math.min(...zValues) : ""}
                       required
                       id="min_z"
                       type="number"
@@ -261,16 +267,10 @@ export default function Step2From(props: any) {
         </div>
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
-            type="button"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Cancel
-          </button>
-          <button
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Save & Go to Next Step
+            Get Result
           </button>
         </div>
       </form>
