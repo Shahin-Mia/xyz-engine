@@ -1,19 +1,51 @@
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { useSearchParams } from "next/navigation";
+
+type row = {
+  project_name: string | any;
+  project_description: string | any;
+  client: string | any;
+  contractor: string | any;
+  max_x: string | any;
+  min_x: string | any;
+  max_y: string | any;
+  min_y: string | any;
+  max_z: string | any;
+  min_z: string | any;
+};
 
 export default function ResultTable() {
   const searchParams = useSearchParams();
-  const project_name = searchParams.get("project_name");
-  const project_description = searchParams.get("project_description");
-  const client = searchParams.get("client");
-  const contractor = searchParams.get("contractor");
-  const max_x = searchParams.get("max_x");
-  const min_x = searchParams.get("min_x");
-  const max_y = searchParams.get("max_y");
-  const min_y = searchParams.get("min_y");
-  const max_z = searchParams.get("max_z");
-  const min_z = searchParams.get("min_z");
+  const project_name = searchParams.get("project_name")?.toString();
+  const project_description = searchParams
+    .get("project_description")
+    ?.toString();
+  const client = searchParams.get("client")?.toString();
+  const contractor = searchParams.get("contractor")?.toString();
+  const max_x = searchParams.get("max_x")?.toString();
+  const min_x = searchParams.get("min_x")?.toString();
+  const max_y = searchParams.get("max_y")?.toString();
+  const min_y = searchParams.get("min_y")?.toString();
+  const max_z = searchParams.get("max_z")?.toString();
+  const min_z = searchParams.get("min_z")?.toString();
 
-  const tableHeader = [
+  function createHeaders(keys: string[] | any[]) {
+    let result = [];
+    for (let i = 0; i < keys.length; i += 1) {
+      result.push({
+        id: keys[i],
+        name: keys[i],
+        prompt: keys[i],
+        width: i === 2 ? 300 : 65,
+        align: "center",
+        padding: 0,
+      });
+    }
+    return result;
+  }
+
+  const tableHeader: string[] = [
     "Project Name",
     "Project Description",
     "Client",
@@ -26,7 +58,7 @@ export default function ResultTable() {
     "min_Z",
   ];
 
-  const tableRows = [
+  const tableRows: row[] = [
     {
       project_name,
       project_description,
@@ -40,9 +72,28 @@ export default function ResultTable() {
       min_z,
     },
   ];
+
+  const pdfHeader: any[] = createHeaders(tableHeader);
+
+  const doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+
+  const onClickHandler = () => {
+    autoTable(doc, {
+      head: [tableHeader],
+      body: [Object.values(tableRows[0])],
+    });
+    doc.save("result.pdf");
+  };
+
   return (
-    <div className="grid grid-cols-4 m-10">
-      <div className="col-span-2 col-start-2">
+    <div className="grid grid-cols-6 m-10">
+      <div className="col-span-4 col-start-2">
+        <button
+          onClick={onClickHandler}
+          className=" bg-gray-600 px-1 py-1 my-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Export as PDF
+        </button>
         <table className="table-auto border-collapse border border-slate-500">
           <thead>
             <tr>
